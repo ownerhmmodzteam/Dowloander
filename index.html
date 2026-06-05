@@ -2,198 +2,412 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Downloader Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SISTEM KEAMANAN - PERINGATAN DARURAT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: radial-gradient(circle at top, #1e3a8a, #0f172a);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: white;
-            min-height: 100vh;
+        :root {
+            --bg-deep: #030305;
+            --glass-bg: rgba(8, 8, 12, 0.75);
+            --accent-red: #ff3b30;
+            --accent-red-glow: rgba(255, 59, 48, 0.25);
+            --accent-blue: #007aff;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(255, 59, 48, 0.3);
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .ios-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        .ios-input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #3b82f6;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        /* CRT & Scanline Overlay Effects */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 99;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
         }
 
-        .btn-ios {
-            background: #3b82f6;
-            border-radius: 14px;
-            transition: all 0.2s ease;
+        /* Ambient Orbs */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-red-glow) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        /* Matrix Canvas Canvas background styling */
+        #matrix-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.04;
+        }
+
+        /* Main Alert Card Container */
+        .alert-card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 460px;
+            padding: 40px;
+            border-radius: 32px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 
+                        0 0 40px rgba(255, 59, 48, 0.1),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            animation: card-intro 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes card-intro {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Decorative High-tech Corner Borders */
+        .alert-card::before, .alert-card::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent-red);
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+        .alert-card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; border-top-left-radius: 32px; }
+        .alert-card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; border-bottom-right-radius: 32px; }
+
+        /* Emergency Animated Icon */
+        .icon-container {
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 24px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--accent-red);
+            animation: ring-explode 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+
+        @keyframes ring-explode {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; border-color: var(--accent-blue); }
+        }
+
+        .hazard-svg {
+            width: 54px;
+            height: 54px;
+            fill: var(--accent-red);
+            filter: drop-shadow(0 0 12px var(--accent-red));
+            animation: hazard-bounce 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes hazard-bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-4px); }
+        }
+
+        /* Typography Styling */
+        .ticker-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent-red);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .ticker-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            animation: blink 0.6s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { opacity: 0.2; }
+            to { opacity: 1; filter: drop-shadow(0 0 4px var(--accent-red)); }
+        }
+
+        .alert-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .alert-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        .alert-description strong {
+            color: var(--text-primary);
             font-weight: 600;
         }
 
-        .btn-ios:active {
-            transform: scale(0.96);
-            opacity: 0.9;
+        .alert-description span {
+            color: var(--accent-red);
+            font-weight: 600;
+            border-bottom: 1px dashed var(--accent-red);
         }
 
-        .tab-active {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+        /* Modernized Tech Logs Console */
+        .console-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: left;
+            max-height: 160px;
+            overflow-y: auto;
+            position: relative;
         }
 
-        .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
+        .console-row {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .console-prompt {
+            color: var(--accent-red);
+            user-select: none;
+        }
+
+        .console-highlight {
+            color: var(--accent-red);
+            font-weight: 500;
+        }
+
+        /* Custom Scrollbar for Console */
+        .console-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .console-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .console-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        /* Live Pulse Badge for Bottom Footer */
+        .footer-badge {
+            margin-top: 24px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Responsive Optimization */
+        @media (max-width: 480px) {
+            .alert-card {
+                padding: 32px 20px;
+                border-radius: 28px;
+            }
+            .alert-title {
+                font-size: 24px;
+            }
+            .alert-description {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4">
+<body>
 
-    <div class="w-full max-w-lg">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold tracking-tight">Downloader</h1>
-            <p class="text-blue-200 opacity-70">Premium Media Saver</p>
+    <!-- Ambient Glow Effects -->
+    <div class="ambient-glow"></div>
+
+    <!-- Background Matrix Stream -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- Main Threat Box -->
+    <div class="alert-card">
+        
+        <!-- Animated Emergency Emblem -->
+        <div class="icon-container">
+            <div class="icon-pulse-ring"></div>
+            <!-- Custom Clean SVG Hazard Triangle Container -->
+            <svg class="hazard-svg" viewBox="0 0 24 24">
+                <path d="M12 2L1 21h22L12 2zm0 4l7.53 13H4.47L12 6zm-1 2v5h2V8h-2zm0 7v2h2v-2h-2z"/>
+            </svg>
         </div>
 
-        <div class="glass-card p-2 mb-6 flex justify-between text-sm">
-            <button onclick="switchTab('tiktok')" id="tab-tiktok" class="flex-1 py-2 tab-active">
-                <i class="fab fa-tiktok mr-1"></i> TikTok
-            </button>
-            <button onclick="switchTab('instagram')" id="tab-instagram" class="flex-1 py-2">
-                <i class="fab fa-instagram mr-1"></i> Instagram
-            </button>
-            <button onclick="switchTab('youtube')" id="tab-youtube" class="flex-1 py-2">
-                <i class="fab fa-youtube mr-1"></i> YT MP3
-            </button>
+        <!-- Section Status Head -->
+        <div class="ticker-header">
+            <div class="ticker-dot"></div>
+            Ancaman Terdeteksi
         </div>
 
-        <div class="glass-card p-6 shadow-2xl">
-            <div class="mb-5">
-                <label id="label-input" class="block text-xs font-medium uppercase tracking-wider text-blue-300 mb-2 ml-1">TikTok URL</label>
-                <input type="text" id="url-input" placeholder="Tempel tautan di sini..." class="w-full ios-input px-4 py-4 text-white placeholder-blue-300/50">
+        <!-- Main Title Header -->
+        <h1 class="alert-title">Sistem Keamanan<br>Aktif</h1>
+
+        <!-- Threat Detail Content Text -->
+        <p class="alert-description">
+            Terjadinya Kebocoran Database, <span>ANCAMAN</span>.<br>
+            <strong>Alamat IP</strong> serta <strong>Id perangkat</strong> Anda sedang diproses dan direkam otomatis.<br><br>
+            Segala bentuk tindakan ilegal lanjutan akan langsung <strong>dilaporkan</strong> ke pihak <strong>HM MODZ TEAM</strong>.
+        </p>
+
+        <!-- Command Console Interface Layout -->
+        <div class="console-box" id="terminal-logs">
+            <div class="console-row">
+                <span class="console-prompt">#</span>
+                <span>Initializing security protocol counters...</span>
             </div>
-
-            <button onclick="processDownload()" id="download-btn" class="w-full btn-ios py-4 flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/20">
-                <span>Mulai Unduh</span>
-                <i class="fas fa-arrow-down"></i>
-            </button>
-
-            <div id="loader" class="hidden mt-6 flex justify-center">
-                <div class="loading-spinner"></div>
+            <div class="console-row">
+                <span class="console-prompt">#</span>
+                <span>Trace routing: <span id="log-ip" class="console-highlight">Resolving...</span></span>
             </div>
-
-            <div id="result" class="hidden mt-8 space-y-4 animate-in fade-in duration-500">
-                <div class="h-px bg-white/10 w-full mb-6"></div>
-                <div id="result-content" class="space-y-3"></div>
+            <div class="console-row">
+                <span class="console-prompt">#</span>
+                <span>Hardware signature: <span id="log-device" class="console-highlight">Analyzing identity...</span></span>
+            </div>
+            <div class="console-row">
+                <span class="console-prompt">#</span>
+                <span>Status: [ <span style="color: #ffcc00; font-weight: 500;">Active Malware System</span> ]</span>
             </div>
         </div>
 
-        <p class="text-center mt-8 text-xs text-blue-300/40">© 2026 HM MODZ PROJECT</p>
+        <!-- Sub System Footer Signature -->
+        <div class="footer-badge">HM MODZ SECURE PROTOCOL</div>
     </div>
 
     <script>
-        let currentType = 'tiktok';
-        const endpoints = {
-            tiktok: 'https://api.sxtream.my.id/downloader/tiktok',
-            instagram: 'https://api.sxtream.my.id/downloader/instagram',
-            youtube: 'https://api.sxtream.my.id/downloader/ytmp3'
-        };
+        // Digital Matrix Rain Visual Engine
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
 
-        function switchTab(type) {
-            currentType = type;
-            document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.remove('tab-active'));
-            document.getElementById(`tab-${type}`).classList.add('tab-active');
+        const glyphs = "01010101010101010101010101010101010101010101";
+        const fontSize = 14;
+        let columns = width / fontSize;
+        let dropTracks = Array(Math.floor(columns)).fill(1);
+
+        function renderMatrixStream() {
+            ctx.fillStyle = 'rgba(3, 3, 5, 0.08)';
+            ctx.fillRect(0, 0, width, height);
             
-            const labels = {
-                tiktok: 'TikTok URL',
-                instagram: 'Instagram URL',
-                youtube: 'YouTube URL'
-            };
-            document.getElementById('label-input').innerText = labels[type];
-            document.getElementById('result').classList.add('hidden');
-        }
-
-        async function processDownload() {
-            const url = document.getElementById('url-input').value;
-            const btn = document.getElementById('download-btn');
-            const loader = document.getElementById('loader');
-            const resultDiv = document.getElementById('result');
-            const resultContent = document.getElementById('result-content');
-
-            if (!url) return alert('Masukkan URL terlebih dahulu!');
-
-            btn.disabled = true;
-            btn.style.opacity = '0.5';
-            loader.classList.remove('hidden');
-            resultDiv.classList.add('hidden');
-
-            try {
-                const response = await fetch(`${endpoints[currentType]}?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-
-                if (data.status) {
-                    resultContent.innerHTML = '';
-                    
-                    if (currentType === 'tiktok') {
-                        createDownloadButton('Video (Tanpa Watermark)', data.result.video, 'fa-video');
-                        createDownloadButton('Audio Only (MP3)', data.result.audio, 'fa-music');
-                    } else if (currentType === 'instagram') {
-                        createDownloadButton('Unduh Video Instagram', data.result.url, 'fa-instagram');
-                    } else if (currentType === 'youtube') {
-                        createDownloadButton('Unduh MP3', data.result.url, 'fa-headphones');
-                    }
-                    
-                    resultDiv.classList.remove('hidden');
-                } else {
-                    alert('Gagal mengambil data. Pastikan URL benar.');
+            ctx.fillStyle = 'rgba(255, 59, 48, 0.4)';
+            ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+            
+            for (let i = 0; i < dropTracks.length; i++) {
+                const character = glyphs[Math.floor(Math.random() * glyphs.length)];
+                ctx.fillText(character, i * fontSize, dropTracks[i] * fontSize);
+                
+                if (dropTracks[i] * fontSize > height && Math.random() > 0.98) {
+                    dropTracks[i] = 0;
                 }
-            } catch (error) {
-                alert('Terjadi kesalahan koneksi ke server.');
-            } finally {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                loader.classList.add('hidden');
+                dropTracks[i]++;
             }
         }
 
-        function createDownloadButton(text, link, icon) {
-            const container = document.getElementById('result-content');
-            const a = document.createElement('a');
-            a.href = link;
-            a.target = '_blank';
-            a.className = 'flex items-center justify-between w-full p-4 ios-input hover:bg-white/20 transition-all';
-            a.innerHTML = `
-                <div class="flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
-                        <i class="fas ${icon} text-blue-400"></i>
-                    </div>
-                    <span class="text-sm font-medium">${text}</span>
-                </div>
-                <i class="fas fa-chevron-right text-white/30 text-xs"></i>
-            `;
-            container.appendChild(a);
-        }
+        const runEngine = setInterval(renderMatrixStream, 40);
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            columns = width / fontSize;
+            dropTracks = Array(Math.floor(columns)).fill(1);
+        });
+
+        // Dynamic System Data Simulating Pipeline
+        setTimeout(() => {
+            const uiIP = document.getElementById('log-ip');
+            const uiDevice = document.getElementById('log-device');
+            const terminal = document.getElementById('terminal-logs');
+
+            // Virtual dynamic generator
+            const maskedIP = `${Math.floor(Math.random() * 223) + 1}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 254) + 1}`;
+            const maskedDevice = "HM-X" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+            uiIP.innerText = maskedIP;
+            uiDevice.innerText = maskedDevice;
+
+            // Append final strict tracking payload statement
+            setTimeout(() => {
+                const statusTraceRow = document.createElement('div');
+                statusTraceRow.className = 'console-row';
+                statusTraceRow.innerHTML = `<span class="console-prompt">#</span><span>Database storage packet: <span class="console-highlight">SAVED & LOGGED.</span></span>`;
+                terminal.appendChild(statusTraceRow);
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 1000);
+
+        }, 1800);
+
+        window.addEventListener('beforeunload', () => {
+            clearInterval(runEngine);
+        });
     </script>
 </body>
 </html>
